@@ -1,9 +1,9 @@
 <template>
-    <div class="flex gap-4 flex-wrap">
+    <div class="flex gap-x-6 gap-y-2 flex-wrap">
         <div v-for="(status, index) in statusList" :key="index" class="basis-1/7 shrink-0">
-            <div v-calc class="relative grid place-items-center h-12"
-                :class="index <= activeIndex ? 'bg-gray-300' : 'bg-[#ddd]'">
-                <span class="text-sm text-center relative z-10 block">{{ status.text }}</span>
+            <div v-calc class="relative grid place-items-center h-12 px-3"
+                :class="index <= activeIndex ? 'bg-gray-400' : 'bg-[#ddd]'">
+                <span class="text-sm text-gray-950 text-center relative z-10 block">{{ status.text }}</span>
                 <div class="triangle absolute right-0" :style="getTriangleStyles"></div>
             </div>
         </div>
@@ -69,6 +69,7 @@ const activeIndex = computed(() => statusList.indexOf(statusList.find((el) => pr
 
 const triangleHeight = ref(0);
 
+// Треугольник в макете тоже не крашеный
 const triangleColor = '#ddd';
 
 // Чтобы треугольник брал реальные размеры плашки

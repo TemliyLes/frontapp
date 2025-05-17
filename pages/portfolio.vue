@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-6">
+    <div class="pt-6 pb-24">
         <div class="flex gap-2 mb-6">
             <div v-for="(btn, btnIndex) in menuBtns" :key="btnIndex">
                 <UButton :icon="makeIcon(btn.icon)" variant="subtle" class="cursor-pointer"></UButton>
@@ -37,9 +37,34 @@
             </div>
         </div>
         <!-- Тут для разнообразия сделаю компонент -->
-        <h2 class="text-xl font-medium mb-3">Статус рассмотрения:</h2>
-        <Status :status="data?.status" />
-        <div></div>
+        <div class="mb-6">
+            <h2 class="text-xl font-medium mb-3">Статус рассмотрения:</h2>
+            <Status :status="data?.status" />
+        </div>
+        <h2 class="text-3xl font-medium mb-3">Pikabu отклик:</h2>
+        <div class="mb-6">
+            <NuxtLink to="https://pikabu.ru/" external>???????????????</NuxtLink>
+        </div>
+        <div class="mb-12">
+            <p class="text-xl"><b>Дата рождения:</b> {{ dateToShow }}</p>
+
+            <!-- Поля гражданство нет в апи -->
+            <p class="text-xl"><b>Город:</b> {{ data?.town }}</p>
+        </div>
+
+        <div class="bg-sky-600 h-36 w-full flex gap-12 p-9">
+            <div class="h-full aspect-square grid place-items-center">
+                <UIcon size="72" :name="makeIcon('info')"></UIcon>
+            </div>
+            <div>
+                <h2 class="text-xl font-medium mb-3">Файлы портфолио:</h2>
+                <div class="flex gap-3">
+                    <div v-for="(file, fileIndex) in portfolios" :key="fileIndex">
+                        <NuxtLink :to="file.href">{{ file.text }}</NuxtLink>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -54,6 +79,7 @@ const MAX_DESCRIPTION_SYMBOLS = 150;
 const showedDescription = computed(() => !fullDescription.value ? `${data.value?.description?.slice(0, MAX_DESCRIPTION_SYMBOLS)}...` : data.value?.description);
 
 const makeIcon = (name: string) => `i-lucide-${name}`;
+
 
 // Картинка есть только на реальном серваке)
 const getRealImgURL = (basic: string) => `https://dev.jobcart.ru/${basic}`
@@ -105,6 +131,15 @@ const userActions = ref([{
 const toggleActive = (index: number) => {
     userActions.value[index].active = !userActions.value[index].active
 };
+
+const dateToShow = computed(() => data.value?.date.split(' ')?.[0])
+
+
+// К сожалению , тут ничего не приходит (
+const portfolios = computed(() => data.value?.portfolios || [{
+    text: 'Ну хоть что-то',
+    href: 'https://pikabu.ru/'
+}])
 
 definePageMeta({
     layout: 'default',
